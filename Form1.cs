@@ -15,7 +15,7 @@ namespace Pacman
 
             foreach (var ghost in ghosts)
             {
-                ghost.ChangeDirection(1 - 2 * Randomize(), 0);
+                ghost.ChangeDirection(1 - 2 * rnd.Next(0, 2), 0);
             }
 
             rnd = new Random();
