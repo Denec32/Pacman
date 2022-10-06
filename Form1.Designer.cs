@@ -119,31 +119,31 @@ namespace Pacman
 
                     if (digitMap[i, j] == 2)
                     {
-                        e.Graphics.FillRectangle(dotBrush, objectMap[i, j].x + 7, objectMap[i, j].y + 7, 4, 4); // dots
+                        e.Graphics.FillRectangle(dotBrush, objectMap[i, j].X + 7, objectMap[i, j].Y + 7, 4, 4); // dots
                         //e.Graphics.DrawRectangle(dotPen, objectMap[i, j].x + 4, objectMap[i, j].y + 4, 8, 8);
                     }
 
                     if (digitMap[i, j] == 3)
-                        e.Graphics.FillEllipse(dotBrush, objectMap[i, j].x + 2, objectMap[i, j].y + 2, 12, 12); // energizer                      
+                        e.Graphics.FillEllipse(dotBrush, objectMap[i, j].X + 2, objectMap[i, j].Y + 2, 12, 12); // energizer                      
                 }
 
 
-            e.Graphics.DrawImage(pacman.Sprite, pacman.x - 5, pacman.y - 5); // pacman
+            e.Graphics.DrawImage(pacman.Sprite, pacman.X - 5, pacman.Y - 5); // pacman
             //e.Graphics.FillRectangle(dotBrush, pacman.x, pacman.y, 16, 16); // pacman hitbox 
 
-            e.Graphics.DrawImage(ghosts[0].Sprite, ghosts[0].x - 5, ghosts[0].y - 5); // pink 
+            e.Graphics.DrawImage(ghosts[0].Sprite, ghosts[0].X - 5, ghosts[0].Y - 5); // pink 
             //e.Graphics.FillRectangle(dotBrush, ghost[0].x, ghost[0].y, 16, 16);
 
-            e.Graphics.DrawImage(ghosts[1].Sprite, ghosts[1].x - 5, ghosts[1].y - 5); // red
+            e.Graphics.DrawImage(ghosts[1].Sprite, ghosts[1].X - 5, ghosts[1].Y - 5); // red
 
-            e.Graphics.DrawImage(ghosts[2].Sprite, ghosts[2].x - 5, ghosts[2].y - 5); // blue
+            e.Graphics.DrawImage(ghosts[2].Sprite, ghosts[2].X - 5, ghosts[2].Y - 5); // blue
             //e.Graphics.FillRectangle(dotBrush, ghost[2].x, ghost[2].y, 16, 16);
 
-            e.Graphics.DrawImage(ghosts[3].Sprite, ghosts[3].x - 5, ghosts[3].y - 5); // orange
+            e.Graphics.DrawImage(ghosts[3].Sprite, ghosts[3].X - 5, ghosts[3].Y - 5); // orange
             //e.Graphics.FillRectangle(dotBrush, ghost[3].x, ghost[3].y, 16, 16);
 
 
-            for (int i = 0; i < pacman.lives; i++)
+            for (int i = 0; i < pacman.Lives; i++)
                 e.Graphics.DrawImage(Properties.Resources.LivesMeter, 24 + 24 * i, 548);
 
             if (showMain == true)
@@ -152,13 +152,13 @@ namespace Pacman
 
                 score = highScore.ToString();
                 chScore = score.ToCharArray();
-                if (pacman.lives >= 0)
+                if (pacman.Lives >= 0)
                 {
                     for (int i = 0; i < chScore.Length; i++)
                         e.Graphics.DrawImage(nums[(int)char.GetNumericValue(chScore[i])], 195 + 12 * i, 20);
                 }
 
-                if (pacman.lives < 0)
+                if (pacman.Lives < 0)
                 {
                     score = currentScore.ToString();
                     chScore = score.ToCharArray(); ;
@@ -187,7 +187,7 @@ namespace Pacman
 
         private void PowerUp(object sender, EventArgs e)
         {
-            pacman.powered = false;
+            pacman.Powered = false;
         }
 
         private void DeathPenalty(object sender, EventArgs e)
@@ -248,7 +248,7 @@ namespace Pacman
 
                 mainMenu = new Bitmap(Properties.Resources.MainMenu, 448, 576);
 
-                pacman.lives = 3;
+                pacman.Lives = 3;
 
                 currentScore = 0;
 
@@ -344,7 +344,7 @@ namespace Pacman
                 {
                     if (digitMap[i, j] == 2)
                     {
-                        if (pacman.CheckCollision(objectMap[i, j].x + 4, objectMap[i, j].y + 4, 8) == true)
+                        if (pacman.CheckCollision(objectMap[i, j].X + 4, objectMap[i, j].Y + 4, 8) == true)
                         {
                             digitMap[i, j] = 4;
                             objectMap[i, j] = new Tile(j, i);
@@ -354,7 +354,7 @@ namespace Pacman
                     }
 
                     if (digitMap[i, j] == 3)
-                        if (pacman.CheckCollision(objectMap[i, j].x + 4, objectMap[i, j].y + 4, 8) == true)
+                        if (pacman.CheckCollision(objectMap[i, j].X + 4, objectMap[i, j].Y + 4, 8) == true)
                         {
                             digitMap[i, j] = 5;
                             objectMap[i, j] = new Tile(j, i);
@@ -362,7 +362,7 @@ namespace Pacman
 
                             powerUp.Stop();
 
-                            pacman.powered = true;
+                            pacman.Powered = true;
 
                             powerUp.Start();
                         }
@@ -372,8 +372,8 @@ namespace Pacman
             /*Check collision for Ghosts*/
             for (int i = 0; i <= 3; i++)
             {
-                if (pacman.CheckCollision(ghosts[i].x, ghosts[i].y, 15) == true)
-                    if (pacman.powered == false)
+                if (pacman.CheckCollision(ghosts[i].X, ghosts[i].Y, 15) == true)
+                    if (pacman.Powered == false)
                         Reset();
                     else
                         Reset(ghosts[i]);
@@ -386,7 +386,7 @@ namespace Pacman
             for (int i = 0; i <= 3; i++)
                 ghosts[i].Respawn();
             pacman.Die();
-            if (pacman.lives < 0)
+            if (pacman.Lives < 0)
             {
                 if (currentScore > highScore)
                 {
@@ -407,8 +407,8 @@ namespace Pacman
         {
             System.Threading.Thread.Sleep(100);
             currentScore += 200;
-            entity.x = 216;
-            entity.y = 256;
+            entity.X = 216;
+            entity.Y = 256;
             entity.IsDead = true;
             deathPenalty.Start();
         }
@@ -417,25 +417,25 @@ namespace Pacman
         {
             freeMove = true;
 
-            if (MapCollision(entity) && !(MapCollision(entity, entity.yDir, entity.xDir) || MapCollision(entity, -entity.yDir, -entity.xDir)))
+            if (MapCollision(entity) && !(MapCollision(entity, entity.YDir, entity.XDir) || MapCollision(entity, -entity.YDir, -entity.XDir)))
                 entity.Move();
             else
             {
                 freeMove = true;
 
                 if (Randomize() == 1)
-                    if (entity.xDir == 0)
+                    if (entity.XDir == 0)
                     {
                         entity.ChangeDirection(1, 0);
 
-                        if (entity.x > pacman.x)
+                        if (entity.X > pacman.X)
                             entity.ChangeDirection(-1, 0);
 
-                        if (pacman.powered == true)
-                            entity.ChangeDirection(-entity.xDir, 0);
+                        if (pacman.Powered == true)
+                            entity.ChangeDirection(-entity.XDir, 0);
 
                         if (!MapCollision(entity))
-                            entity.ChangeDirection(entity.xDir * -1, 0);
+                            entity.ChangeDirection(entity.XDir * -1, 0);
                         entity.Move();
 
                     }
@@ -443,14 +443,14 @@ namespace Pacman
                     {
                         entity.ChangeDirection(0, 1);
 
-                        if (entity.y > pacman.y)
+                        if (entity.Y > pacman.Y)
                             entity.ChangeDirection(0, -1);
 
-                        if (pacman.powered == true)
-                            entity.ChangeDirection(0, -entity.yDir);
+                        if (pacman.Powered == true)
+                            entity.ChangeDirection(0, -entity.YDir);
 
                         if (!MapCollision(entity))
-                            entity.ChangeDirection(0, entity.yDir * -1);
+                            entity.ChangeDirection(0, entity.YDir * -1);
 
                         entity.Move();
                     }
@@ -481,7 +481,7 @@ namespace Pacman
             for (int i = 0; i <= 30; i++)
                 for (int j = 0; j <= 27; j++)
                     if (digitMap[i, j] == 1)
-                        if (entity.CheckCollision(objectMap[i, j].x, objectMap[i, j].y, 16) == true)
+                        if (entity.CheckCollision(objectMap[i, j].X, objectMap[i, j].Y, 16) == true)
                             return false;
             return true;
         }
@@ -491,7 +491,7 @@ namespace Pacman
             for (int i = 0; i <= 30; i++)
                 for (int j = 0; j <= 27; j++)
                     if (digitMap[i, j] == 1)
-                        if (entity.CheckCollision(objectMap[i, j].x, objectMap[i, j].y, dx, dy) == true)
+                        if (entity.CheckCollision(objectMap[i, j].X, objectMap[i, j].Y, dx, dy) == true)
                             return false;
             return true;
         }
@@ -532,39 +532,39 @@ namespace Pacman
             switch (animationFrame)
             {
                 case 0:
-                    if (pacman.xDir == 1)
+                    if (pacman.XDir == 1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pRight1);
-                    if (pacman.xDir == -1)
+                    if (pacman.XDir == -1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pLeft1);
-                    if (pacman.yDir == 1)
+                    if (pacman.YDir == 1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pDown1);
-                    if (pacman.yDir == -1)
+                    if (pacman.YDir == -1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pUp1);
 
                     animationFrame++;
                     break;
 
                 case 1:
-                    if (pacman.xDir == 1)
+                    if (pacman.XDir == 1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pRight);
-                    if (pacman.xDir == -1)
+                    if (pacman.XDir == -1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pLeft);
-                    if (pacman.yDir == 1)
+                    if (pacman.YDir == 1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pDown);
-                    if (pacman.yDir == -1)
+                    if (pacman.YDir == -1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pUp);
 
                     animationFrame++;
                     break;
 
                 case 2:
-                    if (pacman.xDir == 1)
+                    if (pacman.XDir == 1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pRight1);
-                    if (pacman.xDir == -1)
+                    if (pacman.XDir == -1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pLeft1);
-                    if (pacman.yDir == 1)
+                    if (pacman.YDir == 1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pDown1);
-                    if (pacman.yDir == -1)
+                    if (pacman.YDir == -1)
                         pacman.Sprite = new Bitmap(Properties.Resources.pUp1);
 
                     animationFrame++;
@@ -585,45 +585,45 @@ namespace Pacman
             {
                 case 0:
 
-                    if (pacman.powered == true)
+                    if (pacman.Powered == true)
                         for (int i = 0; i <= 3; i++)
                             ghosts[i].Sprite = new Bitmap(Properties.Resources.frightened);
                     else
                     {
-                        if (ghosts[0].xDir == 1)
+                        if (ghosts[0].XDir == 1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkRight1);
-                        if (ghosts[0].xDir == -1)
+                        if (ghosts[0].XDir == -1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkLeft1);
-                        if (ghosts[0].yDir == 1)
+                        if (ghosts[0].YDir == 1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkDown1);
-                        if (ghosts[0].yDir == -1)
+                        if (ghosts[0].YDir == -1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkUp1);
 
-                        if (ghosts[1].xDir == 1)
+                        if (ghosts[1].XDir == 1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redRight1);
-                        if (ghosts[1].xDir == -1)
+                        if (ghosts[1].XDir == -1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redLeft1);
-                        if (ghosts[1].yDir == 1)
+                        if (ghosts[1].YDir == 1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redDown1);
-                        if (ghosts[1].yDir == -1)
+                        if (ghosts[1].YDir == -1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redUp1);
 
-                        if (ghosts[2].xDir == 1)
+                        if (ghosts[2].XDir == 1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueRight1);
-                        if (ghosts[2].xDir == -1)
+                        if (ghosts[2].XDir == -1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueLeft1);
-                        if (ghosts[2].yDir == 1)
+                        if (ghosts[2].YDir == 1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueDown1);
-                        if (ghosts[2].yDir == -1)
+                        if (ghosts[2].YDir == -1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueUp1);
 
-                        if (ghosts[3].xDir == 1)
+                        if (ghosts[3].XDir == 1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeRight1);
-                        if (ghosts[3].xDir == -1)
+                        if (ghosts[3].XDir == -1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeLeft1);
-                        if (ghosts[3].yDir == 1)
+                        if (ghosts[3].YDir == 1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeDown1);
-                        if (ghosts[3].yDir == -1)
+                        if (ghosts[3].YDir == -1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeUp1);
                     }
                     ghostFrame++;
@@ -631,45 +631,45 @@ namespace Pacman
 
                 case 1:
 
-                    if (pacman.powered == true)
+                    if (pacman.Powered == true)
                         for (int i = 0; i <= 3; i++)
                             ghosts[i].Sprite = new Bitmap(Properties.Resources.frightened1);
                     else
                     {
-                        if (ghosts[0].xDir == 1)
+                        if (ghosts[0].XDir == 1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkRight);
-                        if (ghosts[0].xDir == -1)
+                        if (ghosts[0].XDir == -1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkLeft);
-                        if (ghosts[0].yDir == 1)
+                        if (ghosts[0].YDir == 1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkDown);
-                        if (ghosts[0].yDir == -1)
+                        if (ghosts[0].YDir == -1)
                             ghosts[0].Sprite = new Bitmap(Properties.Resources.pinkUp);
 
-                        if (ghosts[1].xDir == 1)
+                        if (ghosts[1].XDir == 1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redRight);
-                        if (ghosts[1].xDir == -1)
+                        if (ghosts[1].XDir == -1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redLeft);
-                        if (ghosts[1].yDir == 1)
+                        if (ghosts[1].YDir == 1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redDown);
-                        if (ghosts[1].yDir == -1)
+                        if (ghosts[1].YDir == -1)
                             ghosts[1].Sprite = new Bitmap(Properties.Resources.redUp);
 
-                        if (ghosts[2].xDir == 1)
+                        if (ghosts[2].XDir == 1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueRight);
-                        if (ghosts[2].xDir == -1)
+                        if (ghosts[2].XDir == -1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueLeft);
-                        if (ghosts[2].yDir == 1)
+                        if (ghosts[2].YDir == 1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueDown);
-                        if (ghosts[2].yDir == -1)
+                        if (ghosts[2].YDir == -1)
                             ghosts[2].Sprite = new Bitmap(Properties.Resources.blueUp);
 
-                        if (ghosts[3].xDir == 1)
+                        if (ghosts[3].XDir == 1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeRight);
-                        if (ghosts[3].xDir == -1)
+                        if (ghosts[3].XDir == -1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeLeft);
-                        if (ghosts[3].yDir == 1)
+                        if (ghosts[3].YDir == 1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeDown);
-                        if (ghosts[3].yDir == -1)
+                        if (ghosts[3].YDir == -1)
                             ghosts[3].Sprite = new Bitmap(Properties.Resources.orangeUp);
                     }
                     ghostFrame--;
@@ -702,8 +702,8 @@ namespace Pacman
                 ghost.Respawn();
             }
 
-            pacman.x = 216;
-            pacman.y = 416;
+            pacman.X = 216;
+            pacman.Y = 416;
 
             pacman.ChangeDirection(0, 0);
         }

@@ -2,15 +2,16 @@
 {
     class Dot : Tile
     {
-        protected int score;
-
-        public Dot(int x, int y)
-            : base(x, y)
-        {
-            score = 10;
-        }
-
         public int Score { get; }
 
+        public Dot(int x, int y): base(x, y)
+        {
+            Score = 10;
+        }
+
+        protected Dot(int x, int y, int score) : base(x, y)
+        {
+            Score = score;
+        }
     }
 }

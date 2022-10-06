@@ -1,19 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pacman
+﻿namespace Pacman
 {
     public class PointMove : PointStatic
     {
-        protected int Speed;
-        protected int XDir;
-        protected int YDir;
+        public int Speed { get; protected set; }
+        public int XDir { get; protected set; }
+        public int YDir { get; protected set; }
 
-        public PointMove(int x, int y, int speed)
-            : base(x, y)
+        public PointMove(int x, int y, int speed) : base(x, y)
         {
             Speed = speed;
 
@@ -37,21 +30,6 @@ namespace Pacman
             }
         }
 
-        public int xDir
-        {
-            get { return XDir; }
-        }
-
-        public int speed
-        {
-            get { return Speed; }
-        }
-
-        public int yDir
-        {
-            get { return YDir; }
-        }
-
         public void ChangeDirection(int xDir, int yDir)
         {
             XDir = xDir;
@@ -63,11 +41,11 @@ namespace Pacman
             int tx2 = tx1 + 16;
             int ty2 = ty1 + 16;
 
-            int x2 = x + 16 + speed * dx;
-            int y2 = y + 16 + speed * dy;
+            int x2 = X + 16 + Speed * dx;
+            int y2 = Y + 16 + Speed * dy;
 
-            int x1 = x + speed * dx;
-            int y1 = y + speed * dy;
+            int x1 = X + Speed * dx;
+            int y1 = Y + Speed * dy;
 
             if (((x2 > tx1) && (y2 > ty1)) && ((x2 < tx2) && (y2 <= ty2)) ||
                 ((x2 > tx1) && (y1 > ty1)) && ((x2 <= tx2) && (y1 < ty2)) ||
@@ -77,7 +55,10 @@ namespace Pacman
             {
                 return true;
             }
-            else return false;
+            else
+            {
+                return false;
+            }
         }
 
         public bool CheckCollision(int tx1, int ty1, int size)
@@ -85,12 +66,11 @@ namespace Pacman
             int tx2 = tx1 + size;
             int ty2 = ty1 + size;
 
-            int x2 = x + size + speed * xDir;
-            int y2 = y + size + speed * yDir;
+            int x2 = X + size + Speed * XDir;
+            int y2 = Y + size + Speed * YDir;
 
-            int x1 = x + speed * xDir;
-            int y1 = y + speed * yDir;
-
+            int x1 = X + Speed * XDir;
+            int y1 = Y + Speed * YDir;
 
             if (((x2 > tx1) && (y2 > ty1)) && ((x2 < tx2) && (y2 <= ty2)) ||
                   ((x2 > tx1) && (y1 > ty1)) && ((x2 <= tx2) && (y1 < ty2)) ||
@@ -100,9 +80,10 @@ namespace Pacman
             {
                 return true;
             }
-            else return false;
-
+            else
+            {
+                return false;
+            }
         }
-
     }
 }

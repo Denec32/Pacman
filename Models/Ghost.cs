@@ -1,37 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Pacman
+﻿namespace Pacman
 {
     public class Ghost : PointMove
     {
-        bool isDead;
+        public bool IsDead { get; set; }
 
-        public Ghost(int x, int y, int speed = 1)
-           : base(x, y, speed)
+        public Ghost(int x, int y, int speed = 1): base(x, y, speed)
         {
-            isDead = false;
+            IsDead = false;
             Sprite = new Bitmap(Properties.Resources.redDown);
-        }
-
-        public bool IsDead
-        {
-            get { return isDead; }
-            set { isDead = value; }
         }
 
         public void Respawn()
         {
-            x = 216;
+            X = 216;
 
-            y = 224;
+            Y = 224;
 
-            isDead = false;
-
+            IsDead = false;
         }
     }
 }
