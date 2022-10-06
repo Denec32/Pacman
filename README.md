@@ -1,16 +1,16 @@
-# Pac-man
+# Pac-Man
 ![image](https://user-images.githubusercontent.com/37003109/194402138-b71c895d-4e67-4f0a-ae2d-97bab09f104c.png)
 
 *Read in other languages: [Русский](/README.md).*
 ## Description
-This is a remake of a popular arcade game **Pac-man** released in 1980 by BANDAI NAMCO Entertainment Inc. 
+This is a remake of a popular arcade game **Pac-Man** released in 1980 by BANDAI NAMCO Entertainment Inc. 
 
 Written using C# and Windows Forms (.NET 6). 
 ## Features:
 - Textures from classic version 📺
 - Highscore system 💯
 - Power-ups ⚡
-- Endless gameplay opporunities ♾
+- Endless gameplay opportunities ♾
 - Four ghosts that will try to hunt you down 👻
 - Option to pause a game ⏸
 
