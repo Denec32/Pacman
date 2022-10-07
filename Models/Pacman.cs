@@ -3,9 +3,9 @@
     class Pacman : PointMove
     {
         public int Lives { get; set; } = 3;
-        public bool Powered { get; set; } = false;
+        public bool IsPowered { get; set; } = false;
 
-        public Pacman(int x, int y, int speed = 1) : base(x, y, speed)
+        public Pacman(int x = 216, int y = 416, int speed = 1) : base(x, y, speed)
         {
             Sprite = new Bitmap(Properties.Resources.pacman);
         }

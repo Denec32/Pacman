@@ -24,7 +24,9 @@ namespace Pacman
 
         static readonly Timer ghostAnimation = new Timer();
 
-        Pacman pacman = new Pacman(216, 416);
+        Pacman pacman = new Pacman();
+
+        Ghost[] ghosts = new Ghost[4];
 
         bool freeMove = false;
 
@@ -44,12 +46,10 @@ namespace Pacman
 
         int highScore;
 
-        Ghost[] ghosts = new Ghost[4];
-
         Random rnd = new Random();
 
-        Bitmap mainMenu = new Bitmap(Properties.Resources.MainMenu, 448, 576);
-        Bitmap helpMenu = new Bitmap(Properties.Resources.HelpMenu, 448, 576);
+        Bitmap mainMenu = new Bitmap(Properties.Resources.MainMenu);
+        Bitmap helpMenu = new Bitmap(Properties.Resources.HelpMenu);
 
         Tile[,] objectMap = new Tile[31, 28];
 
@@ -198,7 +198,7 @@ namespace Pacman
 
         private void PowerUp(object sender, EventArgs e)
         {
-            pacman.Powered = false;
+            pacman.IsPowered = false;
         }
 
         private void DeathPenalty(object sender, EventArgs e)
@@ -390,7 +390,7 @@ namespace Pacman
 
                             powerUp.Stop();
 
-                            pacman.Powered = true;
+                            pacman.IsPowered = true;
 
                             powerUp.Start();
                         }
@@ -403,7 +403,7 @@ namespace Pacman
             {
                 if (pacman.CheckCollision(ghost.X, ghost.Y, 15) == true)
                 {
-                    if (pacman.Powered == false)
+                    if (pacman.IsPowered == false)
                     {
                         Reset();
                     }
@@ -415,6 +415,9 @@ namespace Pacman
             }
         }
 
+        /// <summary>
+        /// Resets round after pacman dies
+        /// </summary>
         public void Reset()
         {
             System.Threading.Thread.Sleep(1000);
@@ -436,23 +439,32 @@ namespace Pacman
                 }
                 ghostMove.Stop();
                 pacmanMove.Stop();
-                mainMenu = new Bitmap(Properties.Resources.DeathMenu, 448, 576);
+                mainMenu = new Bitmap(Properties.Resources.DeathMenu);
                 startDeathMenu.Start();
                 showMain = true;
                 this.Invalidate();
             }
         }
 
-        public void Reset(Ghost entity)
+        /// <summary>
+        /// Sends killed ghost to prison and starts penalty time
+        /// </summary>
+        /// <param name="ghost">Ghost you want to send to prison</param>
+        public void Reset(Ghost ghost)
         {
-            System.Threading.Thread.Sleep(100);
             currentScore += 200;
-            entity.X = 216;
-            entity.Y = 256;
-            entity.IsDead = true;
+
+            ghost.X = 216;
+            ghost.Y = 256;
+            ghost.IsDead = true;
+
             deathPenalty.Start();
         }
 
+        /// <summary>
+        /// Chooses the direction of a moving point
+        /// </summary>
+        /// <param name="entity">Moving entity</param>
         public void GhostMove(PointMove entity)
         {
             freeMove = true;
@@ -476,7 +488,7 @@ namespace Pacman
                             entity.ChangeDirection(-1, 0);
                         }
 
-                        if (pacman.Powered == true)
+                        if (pacman.IsPowered == true)
                         {
                             entity.ChangeDirection(-entity.XDir, 0);
                         }
@@ -498,7 +510,7 @@ namespace Pacman
                             entity.ChangeDirection(0, -1);
                         }
 
-                        if (pacman.Powered == true)
+                        if (pacman.IsPowered == true)
                         {
                             entity.ChangeDirection(0, -entity.YDir);
                         }
@@ -520,7 +532,12 @@ namespace Pacman
 
         }
 
-        public void MoveGen(int dx, int dy) // check the collisions and decide whether to change direction of movement or not
+        /// <summary>
+        /// Check the collisions and decide whether to change direction of movement or not
+        /// </summary>
+        /// <param name="dx">x axis direction</param>
+        /// <param name="dy">y axis direction</param>
+        public void MoveGen(int dx, int dy)
         {
             if (!MapCollision(pacman, dx, dy))
             {
@@ -539,7 +556,14 @@ namespace Pacman
             }
         }
 
-        public bool MapCollision(PointMove entity) // check if there are any collisions for the current direction
+
+        /// <summary>
+        /// Check if there are any collisions for the current direction
+        /// </summary>
+        /// <param name="entity">A moving entity with direction</param>
+        /// <returns>True if the object collides; 
+        /// otherwise False.</returns>
+        public bool MapCollision(PointMove entity)
         {
             for (int i = 0; i < digitMap.GetLength(0); i++)
             {
@@ -558,8 +582,16 @@ namespace Pacman
             return true;
         }
 
-        public bool MapCollision(PointMove entity, int dx, int dy)// check if there are any collisions for the chosen direction
+        /// <summary>
+        /// Check if there are any collisions for the chosen direction
+        /// </summary>
+        /// <param name="entity">A moving entity</param>
+        /// <param name="dx">x axis direction</param>
+        /// <param name="dy">y axis direction</param>
+        /// <returns>True if object collides, otherwise False</returns>
+        public bool MapCollision(PointMove entity, int dx, int dy)
         {
+            
             for (int i = 0; i < digitMap.GetLength(0); i++)
             {
                 for (int j = 0; j < digitMap.GetLength(1); j++)
@@ -684,7 +716,7 @@ namespace Pacman
             {
                 case 0:
 
-                    if (pacman.Powered == true)
+                    if (pacman.IsPowered == true)
                     {
                         for (int i = 0; i <= 3; i++)
                         {
@@ -765,7 +797,7 @@ namespace Pacman
 
                 case 1:
 
-                    if (pacman.Powered == true)
+                    if (pacman.IsPowered == true)
                     {
                         for (int i = 0; i <= 3; i++)
                         {
@@ -847,6 +879,10 @@ namespace Pacman
             }
         }
 
+
+        /// <summary>
+        /// Resets dots, energizers, ghosts and pacman
+        /// </summary>
         public void ResetGame()
         {
             for (int i = 0; i < digitMap.GetLength(0); i++)
@@ -878,57 +914,102 @@ namespace Pacman
             pacman.ChangeDirection(0, 0);
         }
 
-        /// <summary>
-        ///  Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        ///  Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        public PacmanForms()
         {
-            if (disposing && (components != null))
+            InitializeComponent();
+            DoubleBuffered = true; // fixes flickering
+            KeyPreview = true;
+
+            ghosts[0] = new Ghost(192, 224);
+            ghosts[1] = new Ghost(208, 224);
+            ghosts[2] = new Ghost(224, 224);
+            ghosts[3] = new Ghost(240, 224);
+
+            foreach (var ghost in ghosts)
             {
-                components.Dispose();
+                ghost.ChangeDirection(1 - 2 * rnd.Next(0, 2), 0);
             }
-            base.Dispose(disposing);
+
+            rnd = new Random();
+
+            KeyDown += Keyboard.OnKeyDown;
+            KeyUp += Keyboard.OnKeyUp;
+
+            highScore = Properties.Settings.Default.HighScore;
+
+            /* timer creation */
+
+            pacmanMove.Tick += new EventHandler(PacmanTick);
+            pacmanMove.Interval = 1;
+
+            ghostMove.Tick += new EventHandler(GhostTick);
+            ghostMove.Interval = 1;
+
+            startMenu.Tick += new EventHandler(StartMenu);
+            startMenu.Interval = 1;
+            startMenu.Start();
+
+            startDeathMenu.Tick += new EventHandler(StartDeathMenu);
+            startDeathMenu.Interval = 1;
+
+            powerUp.Tick += new EventHandler(PowerUp);
+            powerUp.Interval = 10000;
+
+            deathPenalty.Tick += new EventHandler(DeathPenalty);
+            deathPenalty.Interval = 10000;
+
+            pacmanAnimation.Tick += new EventHandler(PacmanAnimation);
+            pacmanAnimation.Interval = 60;
+
+            ghostAnimation.Tick += new EventHandler(GhostAnimation);
+            ghostAnimation.Interval = 60;
+
+
+            /* tile map init */
+            for (int i = 0; i < digitMap.GetLength(0); i++)
+            {
+                for (int j = 0; j < digitMap.GetLength(1); j++)
+                {
+                    if (digitMap[i, j] == 1)
+                    {
+                        objectMap[i, j] = new Wall(j, i + 3);
+                    }
+
+                    else if (digitMap[i, j] == 2)
+                    {
+                        objectMap[i, j] = new Dot(j, i + 3);
+                        dotsNumber++;
+                    }
+                    else if (digitMap[i, j] == 3)
+                    {
+                        objectMap[i, j] = new Energizer(j, i + 3);
+                    }
+
+                    else
+                    {
+                        objectMap[i, j] = new Tile(j, i + 3);
+                    }
+                }
+            }
+
+            //Load digits
+            for (int i = 0; i < nums.Length; i++)
+            {
+                nums[i] = (Bitmap)Properties.Resources.ResourceManager.GetObject( "_" + i);
+            }
+
+            /*
+            nums[0] = Properties.Resources._0;
+            nums[1] = Properties.Resources._1;
+            nums[2] = Properties.Resources._2;
+            nums[3] = Properties.Resources._3;
+            nums[4] = Properties.Resources._4;
+            nums[5] = Properties.Resources._5;
+            nums[6] = Properties.Resources._6;
+            nums[7] = Properties.Resources._7;
+            nums[8] = Properties.Resources._8;
+            nums[9] = Properties.Resources._9;
+            */
         }
-
-        #region Windows Form Designer generated code
-
-        /// <summary>
-        ///  Required method for Designer support - do not modify
-        ///  the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PacmanForms));
-            this.SuspendLayout();
-            // 
-            // PacmanForms
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.BackColor = System.Drawing.Color.Black;
-            this.BackgroundImage = global::Pacman.Properties.Resources.Map;
-            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(448, 575);
-            this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "PacmanForms";
-            this.RightToLeftLayout = true;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Pacman";
-            this.ResumeLayout(false);
-
-        }
-
-        #endregion
     }
 }
