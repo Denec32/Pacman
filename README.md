@@ -1,7 +1,7 @@
 # Pac-Man
 ![image](https://user-images.githubusercontent.com/37003109/194402138-b71c895d-4e67-4f0a-ae2d-97bab09f104c.png)
 
-*Read in other languages: [Русский](/README.md).*
+*Read in other languages: [Русский](/README.ru.md).*
 ## Description
 This is a remake of a popular arcade game **Pac-Man** released in 1980 by BANDAI NAMCO Entertainment Inc. 
 
